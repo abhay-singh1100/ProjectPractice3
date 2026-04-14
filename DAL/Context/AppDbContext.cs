@@ -16,21 +16,17 @@ namespace DAL.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            options.UseSqlServer("Server = Dell, 51434; Database = Abhay; User Id = Abhay; Password = Abhay; Encrypt = True; TrustServerCertificate = True;");
+            if (!options.IsConfigured)
+            {
+                IConfigurationRoot configuration = new ConfigurationBuilder()
+                    .SetBasePath(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", ".."))
+                    .AddJsonFile("AppSetting.json", optional: false)
+                    .Build();
+
+                string connectionString = configuration.GetConnectionString("DefaultConnection");
+                options.UseSqlServer(connectionString);
+            }
         }
-        //if (!options.IsConfigured) // ✅ prevents override when using DI
-        //        //dotnet add package Microsoft.Extensions.Configuration.Json
-        //{
-        //    IConfigurationRoot configuration = new ConfigurationBuilder()
-        //        .SetBasePath("C:/C#/ProjectPractice3/UI") // ✅ IMPORTANT
-        //        .AddJsonFile("AppSetting.json", optional: false)
-        //        .Build();
-
-        //string connectionString = configuration.GetConnectionString("DefaultConnection");
-
-        //options.UseSqlServer(connectionString); // ✅ THIS WAS MISSING
-        //    //C:\C#\ProjectPractice3\UI\AppSetting.json
-        //}
 
         public DbSet<User> Users { get; set; }
         public DbSet<Booking> Bookings { get; set; }
