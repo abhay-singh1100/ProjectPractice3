@@ -83,31 +83,7 @@ public class UserMenu
         }
     }
 
-    public async Task ViewFlights()
-    {
-        try
-        {
-            var flights = await _flightService.GetAllFlights();
-
-            if (flights == null || flights.Count == 0)
-            {
-                Console.WriteLine("No flights available.");
-                return;
-            }
-
-            var table = new ConsoleTable("ID", "Source", "Destination", "SeatsAvailable", "DepartureTime", "ArrivalTime", "Empty Seats");
-
-            foreach (var f in flights)
-            {
-                table.AddRow(f.Id, f.Source, f.Destination, f.SeatsAvailable, f.DepartureTime, f.ArrivalTime, f.TotalSeats - f.SeatsAvailable);
-            }
-            table.Write();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error retrieving flights: {ex.Message}");
-        }
-    }
+    
     private async Task BookFlight()
     {
         var flights = await _flightService.GetAllFlights();
@@ -159,6 +135,7 @@ public class UserMenu
     {
         try
         {
+            
             var bookings = await _bookingService.GetUserBookings(_userId);
 
             if (bookings == null || bookings.Count == 0)
@@ -185,12 +162,19 @@ public class UserMenu
     {
         try
         {
+            await ViewBookings();
             Console.Write("Booking ID: ");
             int id = int.Parse(Console.ReadLine());
 
-            await _bookingService.CancelBooking(id);
+            var bookings = await _bookingService.GetUserBookings(_userId);
+            if(bookings.FindAll(x => x.Id == id) != null)
+            {
+                await _bookingService.CancelBooking(id);
+                Console.WriteLine("Booking Cancelled Successfully!");
 
-            Console.WriteLine("Booking Cancelled Successfully!");
+            }
+
+
         }
         catch (Exception ex)
         {
