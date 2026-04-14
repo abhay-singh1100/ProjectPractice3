@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="BAL/BAL.csproj" Id="1c2b6a97-a57a-4cb0-957d-64dbdaf82390" />
+  <Project Path="DAL/DAL.csproj" Id="e5ec8918-974a-471b-b2e3-218444f77239" />
+  <Project Path="Shared/Shared.csproj" Id="8cf8d26e-e537-4135-a7ab-af9dfdc70717" />
+  <Project Path="UI/UI.csproj" Id="04f2b5f8-1500-43d3-aa01-ba47e5c2bd1e" />
+</Solution>
