@@ -38,18 +38,12 @@ namespace DAL.Repositries
             }
 
         }
-        public async Task DeleteFligth(int id )
+        public async Task DeleteFligth(Flight flight)
         {
-            var flight = await _context.Flights.FindAsync(id);
-            if (flight != null)
-            {
+           
                  _context.Remove(flight);
                 _context.SaveChanges();
-            }
-            else
-            {
-                throw new Exception("Flight not found");
-            }
+            
         }
 
         public async Task<Flight> GetFlightById(int id)

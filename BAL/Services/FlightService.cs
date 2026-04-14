@@ -59,19 +59,19 @@ namespace BAL.Services
             return flightDtos;
         }
 
-        public async Task<FlightDto> GetFlightById(int id)
+        public async Task<Flight> GetFlightById(int id)
         {
             var f = await _flightRepo.GetFlightById(id);
             if (f == null)
                 throw new Exception("Flight not found");
 
-            var flightDto = new FlightDto
+            var flightDto = new Flight
             {
                 Id = f.Id,
                 FlightNumber = f.FlightNumber ?? "",
                 Source = f.Source ?? "",
                 Destination = f.Destination ?? "",
-                DepartureTime = f.DepatureTime,
+                DepatureTime = f.DepatureTime,
                 ArrivalTime = f.ArrivalTime,
                 SeatsAvailable = f.SeatsAvailable,
                 Price = f.Price
@@ -114,9 +114,9 @@ namespace BAL.Services
             await _flightRepo.UpdateFlightAsync(flight);
         }
 
-        public async Task DeleteFlight(int id)
+        public async Task DeleteFlight(Flight flight)
         {
-            await _flightRepo.DeleteFligth(id);
+            await _flightRepo.DeleteFligth(flight);
         }
     }
 }

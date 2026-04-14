@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using ConsoleTables;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 public class UserMenu
 {
@@ -82,10 +83,53 @@ public class UserMenu
         }
     }
 
-    private async Task BookFlight()
+    public async Task ViewFlights()
     {
         try
         {
+            var flights = await _flightService.GetAllFlights();
+
+            if (flights == null || flights.Count == 0)
+            {
+                Console.WriteLine("No flights available.");
+                return;
+            }
+
+            var table = new ConsoleTable("ID", "Source", "Destination", "SeatsAvailable", "DepartureTime", "ArrivalTime", "Empty Seats");
+
+            foreach (var f in flights)
+            {
+                table.AddRow(f.Id, f.Source, f.Destination, f.SeatsAvailable, f.DepartureTime, f.ArrivalTime, f.TotalSeats - f.SeatsAvailable);
+            }
+            table.Write();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error retrieving flights: {ex.Message}");
+        }
+    }
+    private async Task BookFlight()
+    {
+        var flights = await _flightService.GetAllFlights();
+
+        if (flights == null || flights.Count == 0)
+        {
+            Console.WriteLine("No flights available.");
+            return;
+        }
+
+        var table = new ConsoleTable("ID", "Source", "Destination", "SeatsAvailable", "DepartureTime", "ArrivalTime", "Empty Seats");
+
+        foreach (var f in flights)
+        {
+            table.AddRow(f.Id, f.Source, f.Destination, f.SeatsAvailable, f.DepartureTime, f.ArrivalTime, f.TotalSeats - f.SeatsAvailable);
+        }
+        table.Write();
+
+
+        try
+        {
+            
             Console.Write("Flight ID: ");
             int id = int.Parse(Console.ReadLine());
 

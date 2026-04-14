@@ -87,7 +87,7 @@ namespace BAL.Services
             }
 
             booking.Status = BookingStatus.Cancelled;
-            await _bookingRepo.Update(booking);
+            await _bookingRepo.DeleteBooking(booking);
         }
 
         public async Task<List<BookingDto>> GetUserBookings(int userId)

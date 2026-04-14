@@ -8,8 +8,8 @@ using ConsoleTables;
 
 public class AdminMenu
 {
-    private readonly IFlightServices _flightService;
-    private readonly IBookingServices _bookingService;
+    private  readonly IFlightServices _flightService;
+    private  readonly IBookingServices _bookingService;
 
     public AdminMenu(IFlightServices flightService, IBookingServices bookingService)
     {
@@ -82,11 +82,11 @@ public class AdminMenu
         }
     }
 
-    private async Task ViewFlights()
+    public   async Task ViewFlights()
     {
         try
         {
-            var flights = await _flightService.GetAllFlights();
+            var flights = await  _flightService.GetAllFlights();
 
             if (flights == null || flights.Count == 0)
             {
@@ -114,8 +114,9 @@ public class AdminMenu
         {
             Console.Write("Enter Flight ID: ");
             int id = int.Parse(Console.ReadLine() ?? "0");
+            var flight = await _flightService.GetFlightById(id);
 
-            await _flightService.DeleteFlight(id);
+            await _flightService.DeleteFlight(flight);
             Console.WriteLine("Flight Deleted Successfully!");
         }
         catch (Exception ex)

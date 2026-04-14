@@ -8,7 +8,7 @@ namespace DAL.Interfaces
     public interface IFlightRepository
     {
         Task AddFlightAsync(Flight flight);
-        Task DeleteFligth(int id);
+        Task DeleteFligth(Flight flight);
 
         Task<Flight> GetFlightById(int id);
 
